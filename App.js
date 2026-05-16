@@ -1,5 +1,4 @@
-// App.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import {
   Home,
@@ -18,10 +18,15 @@ import {
   Wifi,
   BatteryFull,
 } from "lucide-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./src/config/firebase";
 
 // Import Screens
 import LockScreen from "./src/screens/LockScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import "react-native-svg";
 import ProjectsScreen from "./src/screens/ProjectsScreen";
 import FinancialScreen from "./src/screens/FinancialScreen";
 import AlertsScreen from "./src/screens/AlertsScreen";
@@ -31,7 +36,40 @@ import NavItem from "./src/components/NavItem";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [authScreen, setAuthScreen] = useState("Login"); // Tracks "Login" or "SignUp"
   const [activeTab, setActiveTab] = useState("Home");
+
+  useEffect(() => {
+    // 1. Firebase listener checks if session is valid on app launch
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+        // 2. Save state locally for fast offline session caching
+        await AsyncStorage.setItem("@ceo_auth_token", "true");
+      } else {
+        setIsAuthenticated(false);
+        await AsyncStorage.removeItem("@ceo_auth_token");
+      }
+      setIsCheckingAuth(false);
+    });
+
+    return unsubscribe; // Cleanup listener on unmount
+  }, []);
+
+  // Show a dark screen with spinner while checking auth state
+  if (isCheckingAuth) {
+    return (
+      <View
+        style={[
+          styles.container,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#3B82F6" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,7 +87,20 @@ export default function App() {
 
       <View style={styles.content}>
         {!isAuthenticated ? (
-          <LockScreen onUnlock={() => setIsAuthenticated(true)} />
+          authScreen === "Login" ? (
+            <LockScreen
+              onUnlock={() => setIsAuthenticated(true)}
+              onNavigateToSignUp={() => setAuthScreen("SignUp")}
+            />
+          ) : (
+            <SignUpScreen
+              onNavigateToLogin={() => setAuthScreen("Login")}
+              onSignUpSuccess={() => {
+                setAuthScreen("Login");
+                alert("Account Created Successfully! Please Login.");
+              }}
+            />
+          )
         ) : (
           <>
             {/* Header */}
@@ -144,7 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     paddingTop: 16,
-    paddingBottom: 35, // <-- This pushes the icons up above the Realme system buttons
+    paddingBottom: 35, // Rest comfortable clear of system overlay navigation bars
     borderTopWidth: 1,
     borderTopColor: "#1D202D",
   },

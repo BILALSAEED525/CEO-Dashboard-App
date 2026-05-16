@@ -1,4 +1,4 @@
-// src/screens/LockScreen.jsx
+// src/screens/SignUpScreen.jsx
 import React, { useState } from "react";
 import {
   View,
@@ -9,19 +9,19 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { Lock } from "lucide-react-native";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Lock, Mail } from "lucide-react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-export default function LockScreen({ onUnlock, onNavigateToSignUp }) {
+export default function SignUpScreen({ onNavigateToLogin, onSignUpSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     if (!email || !password) {
-      setErrorMsg("Please enter both email and password");
+      setErrorMsg("Please fill in all fields");
       return;
     }
 
@@ -29,10 +29,16 @@ export default function LockScreen({ onUnlock, onNavigateToSignUp }) {
     setErrorMsg("");
 
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
-      onUnlock();
+      await createUserWithEmailAndPassword(auth, email.trim(), password);
+      onSignUpSuccess();
     } catch (error) {
-      setErrorMsg("Invalid email or master password");
+      if (error.code === "auth/email-already-in-use") {
+        setErrorMsg("This email is already registered");
+      } else if (error.code === "auth/weak-password") {
+        setErrorMsg("Password should be at least 6 characters");
+      } else {
+        setErrorMsg("Registration failed. Try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -41,27 +47,17 @@ export default function LockScreen({ onUnlock, onNavigateToSignUp }) {
   return (
     <View style={styles.lockContainer}>
       <View style={styles.lockAvatarContainer}>
-        <View style={styles.avatarWrapper}>
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150&h=150",
-            }}
-            style={styles.lockAvatar}
-          />
-          <div style={styles.lockBadge}>
-            <Lock size={12} color="#3B82F6" />
-          </div>
-        </View>
-        <Text style={styles.lockName}>Fratity Deal</Text>
-        <p style={styles.lockTitle}>CEO at linagie</p>
+        <Text style={styles.lockName}>Create CEO Account</Text>
+        <p style={styles.lockTitle}>Register secure access credentials</p>
       </View>
 
       <View style={styles.lockCard}>
-        <Text style={styles.inputLabel}>Email Address</Text>
+        <Text style={styles.inputLabel}>Corporate Email</Text>
         <TextInput
           style={styles.passwordInput}
           placeholder="ceo@linagie.com"
           placeholderTextColor="#4A5568"
+          keyboardType="email-address"
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
@@ -81,23 +77,20 @@ export default function LockScreen({ onUnlock, onNavigateToSignUp }) {
 
         <TouchableOpacity
           style={styles.unlockBtn}
-          onPress={handleLogin}
+          onPress={handleSignUp}
           disabled={loading}
         >
           {loading ? (
             <ActivityIndicator color="#FFF" />
           ) : (
-            <Text style={styles.unlockBtnText}>Unlock Dashboard</Text>
+            <Text style={styles.unlockBtnText}>Register & Access</Text>
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={onNavigateToSignUp}
-          style={{ marginTop: 20 }}
-        >
+        <TouchableOpacity onPress={onNavigateToLogin} style={{ marginTop: 20 }}>
           <Text style={styles.switchText}>
-            Don't have an account?{" "}
-            <Text style={{ color: "#3B82F6" }}>Sign Up</Text>
+            Already have an account?{" "}
+            <Text style={{ color: "#3B82F6" }}>Log In</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -110,28 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 24,
-    marginTop: -40,
+    marginTop: -20,
   },
   lockAvatarContainer: { alignItems: "center", marginBottom: 24 },
-  avatarWrapper: { position: "relative" },
-  lockAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 2,
-    borderColor: "#3B82F6",
-  },
-  lockBadge: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: "#1D202D",
-    padding: 4,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#2A2E3D",
-  },
-  lockName: { color: "#FFF", fontSize: 22, fontWeight: "bold", marginTop: 12 },
+  lockName: { color: "#FFF", fontSize: 24, fontWeight: "bold" },
   lockTitle: { color: "#8F9BB3", fontSize: 13, marginTop: 4 },
   lockCard: { backgroundColor: "#1D202D", borderRadius: 24, padding: 24 },
   inputLabel: { color: "#8F9BB3", fontSize: 12, marginBottom: 8 },
