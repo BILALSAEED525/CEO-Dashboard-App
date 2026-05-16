@@ -1,4 +1,3 @@
-// src/screens/LockScreen.jsx
 import React, { useState } from "react";
 import {
   View,
@@ -48,12 +47,12 @@ export default function LockScreen({ onUnlock, onNavigateToSignUp }) {
             }}
             style={styles.lockAvatar}
           />
-          <div style={styles.lockBadge}>
+          <View style={styles.lockBadge}>
             <Lock size={12} color="#3B82F6" />
-          </div>
+          </View>
         </View>
         <Text style={styles.lockName}>Fratity Deal</Text>
-        <p style={styles.lockTitle}>CEO at linagie</p>
+        <Text style={styles.lockTitle}>CEO at linagie</Text>
       </View>
 
       <View style={styles.lockCard}>

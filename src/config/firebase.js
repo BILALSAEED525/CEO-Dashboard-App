@@ -1,16 +1,20 @@
-// src/config/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Copied directly from your Firebase Console screen
 const firebaseConfig = {
-  apiKey: "AIzaSyDCZIgxNkKL5lDvwbuXdUKwyyCEfvJAVeo",
+  apiKey: "AIzaSyDCZIgxNkKL5lDvwbuXdUKwyYCEfvJAVeo",
   authDomain: "ceo-dashboard-app.firebaseapp.com",
   projectId: "ceo-dashboard-app",
-  storageBucket: "ceo-dashboard-app.appspot.com",
-  messagingSenderId: "36724395899", // Grab this number from your screen scroll
-  appId: "1:36724395899:web:5b967a514e8b3b44b6c321", // Grab this string from your screen scroll
+  storageBucket: "ceo-dashboard-app.firebasestorage.app",
+  messagingSenderId: "511815382835",
+  appId: "1:511815382835:web:88806c7c3e91712c39b046",
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+// Initialize Auth specifically for React Native
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});

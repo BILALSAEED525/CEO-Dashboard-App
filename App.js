@@ -41,20 +41,27 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("Home");
 
   useEffect(() => {
-    // 1. Firebase listener checks if session is valid on app launch
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setIsAuthenticated(true);
-        // 2. Save state locally for fast offline session caching
-        await AsyncStorage.setItem("@ceo_auth_token", "true");
-      } else {
-        setIsAuthenticated(false);
-        await AsyncStorage.removeItem("@ceo_auth_token");
+      try {
+        if (user) {
+          setIsAuthenticated(true);
+          await AsyncStorage.setItem("@ceo_auth_token", "true");
+        } else {
+          setIsAuthenticated(false);
+          await AsyncStorage.removeItem("@ceo_auth_token");
+        }
+      } catch (error) {
+        console.error(
+          "Error updating async storage during auth change:",
+          error,
+        );
+      } finally {
+        // This guarantees the loading spinner will hide, even if an error occurs above
+        setIsCheckingAuth(false);
       }
-      setIsCheckingAuth(false);
     });
 
-    return unsubscribe; // Cleanup listener on unmount
+    return unsubscribe;
   }, []);
 
   // Show a dark screen with spinner while checking auth state

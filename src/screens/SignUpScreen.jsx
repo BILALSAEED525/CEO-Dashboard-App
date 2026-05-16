@@ -1,4 +1,3 @@
-// src/screens/SignUpScreen.jsx
 import React, { useState } from "react";
 import {
   View,
@@ -32,13 +31,9 @@ export default function SignUpScreen({ onNavigateToLogin, onSignUpSuccess }) {
       await createUserWithEmailAndPassword(auth, email.trim(), password);
       onSignUpSuccess();
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        setErrorMsg("This email is already registered");
-      } else if (error.code === "auth/weak-password") {
-        setErrorMsg("Password should be at least 6 characters");
-      } else {
-        setErrorMsg("Registration failed. Try again.");
-      }
+      // This will force the app to show the EXACT error Firebase is throwing
+      setErrorMsg("Error: " + error.message);
+      console.log("FULL FIREBASE ERROR:", error);
     } finally {
       setLoading(false);
     }
@@ -48,7 +43,7 @@ export default function SignUpScreen({ onNavigateToLogin, onSignUpSuccess }) {
     <View style={styles.lockContainer}>
       <View style={styles.lockAvatarContainer}>
         <Text style={styles.lockName}>Create CEO Account</Text>
-        <p style={styles.lockTitle}>Register secure access credentials</p>
+        <Text style={styles.lockTitle}>Register secure access credentials</Text>
       </View>
 
       <View style={styles.lockCard}>
