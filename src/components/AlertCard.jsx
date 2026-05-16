@@ -1,4 +1,3 @@
-// src/components/AlertCard.jsx
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
@@ -16,12 +15,21 @@ export default function AlertCard({
       <View style={[styles.alertIconBg, { backgroundColor: iconColor }]}>
         <Icon size={22} color="#FFF" />
       </View>
+
       <View style={styles.alertBody}>
-        <View>
-          <Text style={styles.alertTitle}>{title}</Text>
-          <Text style={styles.alertDesc}>{desc1}</Text>
-          <Text style={styles.alertDesc}>{desc2}</Text>
+        {/* ADDED flex: 1 HERE to stop the text from pushing the right side out */}
+        <View style={{ flex: 1, paddingRight: 10 }}>
+          <Text style={styles.alertTitle} numberOfLines={1}>
+            {title}
+          </Text>
+          <Text style={styles.alertDesc} numberOfLines={1}>
+            {desc1}
+          </Text>
+          <Text style={styles.alertDesc} numberOfLines={1}>
+            {desc2}
+          </Text>
         </View>
+
         <View style={styles.alertRight}>
           <Text style={styles.alertTime}>{time}</Text>
           <Text style={styles.alertAction}>{extraRight}</Text>
@@ -38,6 +46,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: "row",
     marginBottom: 16,
+    overflow: "hidden",
   },
   alertIconBg: {
     width: 48,
@@ -47,7 +56,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 16,
   },
-  alertBody: { flex: 1, flexDirection: "row", justifyContent: "space-between" },
+  alertBody: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   alertTitle: {
     color: "#FFF",
     fontSize: 15,
@@ -55,7 +69,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   alertDesc: { color: "#8F9BB3", fontSize: 12, marginTop: 2 },
-  alertRight: { alignItems: "flex-end", justifyContent: "space-between" },
-  alertTime: { color: "#5F6A80", fontSize: 12 },
+  alertRight: {
+    alignItems: "flex-end",
+    justifyContent: "center",
+    minWidth: 50,
+  }, // Added minWidth to protect the right side
+  alertTime: { color: "#5F6A80", fontSize: 12, marginBottom: 4 },
   alertAction: { color: "#8F9BB3", fontSize: 11 },
 });

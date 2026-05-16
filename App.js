@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#12141D",
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 16,
+    paddingTop: 16,
+    paddingBottom: 35, // <-- This pushes the icons up above the Realme system buttons
     borderTopWidth: 1,
     borderTopColor: "#1D202D",
   },
