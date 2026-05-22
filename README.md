@@ -5,7 +5,7 @@
 **A sleek executive mobile dashboard for real-time business intelligence — built for leaders who need their KPIs, projects, and alerts in one place.**
 
 
-<img width="720" height="1600" alt="signup" src="https://github.com/user-attachments/assets/003f0b7b-f16f-452d-9bc8-23ff92ddfc06" />
+<img width="400" height="800" alt="signup" src="https://github.com/user-attachments/assets/003f0b7b-f16f-452d-9bc8-23ff92ddfc06" />
 
 <img width="720" height="1600" alt="login" src="https://github.com/user-attachments/assets/1c3b1978-2095-4ba4-8a16-5d2445924e88" />
 <img width="720" height="1600" alt="home" src="https://github.com/user-attachments/assets/3ee6d50f-bb67-4802-947f-423ed160bc72" />
