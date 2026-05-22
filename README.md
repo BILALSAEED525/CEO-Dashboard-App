@@ -4,9 +4,16 @@
 
 **A sleek executive mobile dashboard for real-time business intelligence — built for leaders who need their KPIs, projects, and alerts in one place.**
 
-![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+
+<img width="720" height="1600" alt="signup" src="https://github.com/user-attachments/assets/003f0b7b-f16f-452d-9bc8-23ff92ddfc06" />
+
+<img width="720" height="1600" alt="login" src="https://github.com/user-attachments/assets/1c3b1978-2095-4ba4-8a16-5d2445924e88" />
+<img width="720" height="1600" alt="home" src="https://github.com/user-attachments/assets/3ee6d50f-bb67-4802-947f-423ed160bc72" />
+<img width="720" height="1600" alt="finance" src="https://github.com/user-attachments/assets/073955d9-5092-4799-b51d-623aae76ce60" />
+<img width="720" height="1600" alt="alerts" src="https://github.com/user-attachments/assets/7345f9cf-5bdd-459a-8c38-e824fa3650e3" />
+<img width="720" height="1600" alt="projects" src="https://github.com/user-attachments/assets/2716e5ce-7aa8-46b3-a34e-9563bebe7e3b" />
+
+
 
 </div>
 
